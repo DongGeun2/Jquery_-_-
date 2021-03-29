@@ -28,14 +28,17 @@
   -->
 <style>
 
-
 body {
 	font-family: "malgun gothic";
-	font-size: 9pt;
+	font-size: 9pt; 
+}
+
+h1{
+	text-align: left;
 }
 
 th {
-	text-align: right;
+	text-align: center;
 	background-color: #dbdbdb;
 }
 
@@ -50,12 +53,12 @@ th.title {
 
 </head>
 <body>
+<div class=main>
+	<h1><span style="color:rgb(66, 133, 244)">D</span><span style="color:rgb(234, 67, 53)">o</span><span style="color:rgb(251, 188, 5)">n</span><span style="color:rgb(66, 133, 244)">g</span>
+		<span style="color:rgb(52, 168, 83)">G</span><span style="color:rgb(234, 67, 53)">l</span><span style="color:rgb(251, 188, 5)">e</span></h1>
 	<form name="signForm" id="signForm" method="post"
 		action="MemberJoinOK.jsp">
 		<table>
-			<tr>
-				<th colspan="2" class="title">회원가입</th>
-			</tr>
 			<tr>
 				<th>아이디</th>
 				<td><input type="text" maxlength="20" id="userId" name="userId"
@@ -77,12 +80,6 @@ th.title {
 				<th>패스워드 확인</th>
 				<td><input type="password" maxlength="16" id="userPassCheck"
 					name="userPassCheck" title="패스워드 확인"><p class="tdpwch"><p></td>
-			</tr>
-			<tr>
-				<th>성별</th>
-				<td><input type="radio" name="gender" value="male" checked>남
-					&nbsp&nbsp; <input type="radio" name="gender" value="female">여
-				</td>
 			</tr>
 			<tr>
 				<th>이메일</th>
@@ -124,11 +121,12 @@ th.title {
 				<td><input class="datepicker" type="text" name="year"></td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="button" value="가입완료"> <input
+				<td colspan="2"><input type="button" value="가입완료" class="button"> <input
 					type="reset" value="입력취소"></td>
 			</tr>
 		</table>
 	</form>
+</div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -137,26 +135,30 @@ th.title {
 
 // 아이디 체크
 var idcheck = /^([A-Za-z])+([0-9])+$/;
-
+var idck = false;
 $('#userId').blur(function(){
 	if(idcheck.test($('#userId').val()) && $('#userId').val().length >= 3){
 		$('.tdid').html("");
+		idck = true;
 	}else{
 		$('.tdid').attr("style","color:red; font-size:3px");
 		$('.tdid').html("3~16자리의 영문+숫자 조합으로 입력해주세요");
+		idck = false;
 	}
 	
 	
 });
 //이름 체크
 var namecheck = /^[가-힣]{2,3}$/;
-
+var nameck = false;
 $('#userName').blur(function(){
 	if(namecheck.test($('#userName').val())){
 		$(".tdname").html("");
+		nameck = true;
 	}else{
 		$('.tdname').attr("style","color:red; font-size:3px");
 		$('.tdname').html("이름을 입력해주세요");
+		nameck = false;
 	}
 	
 })
@@ -164,14 +166,18 @@ $('#userName').blur(function(){
 
 //비밀번호 체크   
 var passwoercheck = /^([A-Za-z])+([0-9])+([~!@#$%^&*()_+|<>?:{}])+$/; 
-    
+var passck = false;
+var passck2= false;
 $('#userPass').blur(function() {
 	if (passwoercheck.test($('#userPass').val()) && $("#userPass").val().length >= 8) {
 		console.log("일치" + $('#userPass').val());
 		$('.tdpw').html("");
+		passck2= true;
 	}else if(!passwoercheck.test($('#userPass').val())){
 		$('.tdpw').attr("style","color:red; font-size:3px");
 		$('.tdpw').html("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
+		passck2= false;
+		
 	}
 })
 
@@ -179,38 +185,45 @@ $('#userPassCheck').blur(function() {
 	if ($('#userPass').val() == $('#userPassCheck').val()) {
 		console.log("일치");
 		$('.tdpwch').html("");
+		passck = true;
 	}else if($('#userPass').val() != $('#userPassCheck').val() && $('#userPassCheck').val().length >= 3 ){
 		$('.tdpwch').attr("style","color:red; font-size:3px");
 		$('.tdpwch').html("비밀번호가 일치하지 않습니다.");
+		passck = false;
 	}
 })
 // 이메일 체크
 var emailcheck = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-
+var emailck = false;
 $('#userEmail').blur(function(){
 	if(emailcheck.test($('#userEmail').val())){
 		$('.tdmail').html("");
+		emailck = true;
 	}else{
 		$('.tdmail').attr("style","color:red; font-size:3px");
 		$('.tdmail').html("이메일 형식이 맞지 않습니다");
+		emailck = false;
 	}
 	
 })
 // 주민번호 체크
 var jumincheck1 = /^([0-9]){6}$/;
 var jumincheck2 = /^([1-4])+([0-9]){6}$/;
-
+var jumincheck = false;
 $('#userSsn2').blur(function(){
 	if(jumincheck1.test($('#userSsn1').val()) && jumincheck2.test($('#userSsn2').val())){
 		$('.jumincheck').html("");
+		jumincheck = true;
 	}else{
 		$('.jumincheck').attr("style","color:red; font-size:3px");
 		$('.jumincheck').html("형식이 맞지 않습니다");
+		jumincheck = false;
 	}
 	
 })
 
 // 우편번호 체크 
+	var zipcodecheck = false;
 $('#userZipCodebutton').click(function(){
 	window.open('popup.html','우편번호검색','width=500,height=500,menubar=no');
 		
@@ -220,23 +233,27 @@ $('#userAddr2').focus(function(){
 		if($('#userAddr2').val() == ""){
 			$('.tdAddr').attr("style","color:red; font-size:3px");
 			$('.tdAddr').html("주소를 채워주세요");
+			zipcodecheck = false;
 		}else{
 			$('.tdAddr').html("");
+			zipcodecheck = true;
 		}	
 })
 $('#userAddr2').blur(function(){
 		if($('#userAddr2').val() == ""){
 			$('.tdAddr').attr("style","color:red; font-size:3px");
 			$('.tdAddr').html("주소를 채워주세요");
+			zipcodecheck = false;
 		}else{
 			$('.tdAddr').html("");
+			zipcodecheck = true;
 		}	
 })
 
 
 //핸드폰번호 체크
     var phonNumberCheck = /^01[0179][0-9]{7,8}$/;
-    var phoneCheck;
+    var phoneCheck = false;
     
    $('#userPhone').blur(function(){
       if(phonNumberCheck.test($('#userPhone').val())){
@@ -259,6 +276,16 @@ $('#userAddr2').blur(function(){
 			
 	});
 
+// 버튼 선택 
+	$('.button').click(function(){
+		if(idck == false || nameck == false || passck==false || emailck == false || jumincheck == false || zipcodecheck == false || phoneCheck ==false || passck2 ==false){
+			alert("빈칸을 모두 채워주세요.");
+			return;
+		}else{
+			alert("가입이 완료 되었습니다.");
+			$('#signForm').submit();
+		}	
+	})
 
 
 </script>
